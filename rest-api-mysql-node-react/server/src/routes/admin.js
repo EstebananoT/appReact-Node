@@ -51,7 +51,7 @@ router.post('/addUser', (req, res) =>{
     mysqlConnection.query(queryTest,[correo],
     (err, rows, fields)=>{
         if(!err){
-            if(rows.length == 0){
+            if(rows.length > 0){
                 mysqlConnection.query(query,[correo,password,rol],(err,rows,fields) =>{
                     res.json({Status:'User saved'});
                 });
