@@ -25,6 +25,24 @@ router.get('/:id',(req,res)=>{
     });
 });
 
+router.post('/loginUser',(req,res) =>{
+    const{correo, password} = req.body;
+    console.log(correo , password);
+    const query ='SELECT * FROM users where correo = ? AND password = ?;';
+    mysqlConnection.query(query,[correo, password],
+    (err, result)=>{
+        if(err){
+            res.send({'err ':err});
+        }
+        if(result.length != 0 ){
+            res.send(result);   
+        }else{
+            res.send({message:'Username or password are invalid'});
+        }
+    });
+});
+
+
 router.post('/addUser', (req, res) =>{
     const{correo , password} = req.body;
     rol = 'user';
