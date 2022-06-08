@@ -27,14 +27,13 @@ router.get('/:id',(req,res)=>{
 
 router.post('/loginUser',(req,res) =>{
     const{correo, password} = req.body;
-    console.log(correo , password);
     const query ='SELECT * FROM users where correo = ? AND password = ?;';
     mysqlConnection.query(query,[correo, password],
     (err, result)=>{
         if(err){
             res.send({'err ':err});
         }
-        if(result.length != 0 ){
+        if(result.length > 0 ){
             res.send(result);   
         }else{
             res.send({message:'Username or password are invalid'});
@@ -51,16 +50,16 @@ router.post('/addUser', (req, res) =>{
     mysqlConnection.query(queryTest,[correo],
     (err, rows, fields)=>{
         if(!err){
-            if(rows.length > 0){
+            if(rows.length == 0){
                 mysqlConnection.query(query,[correo,password,rol],(err,rows,fields) =>{
-                    res.json({Status:'User saved'});
+                    res.send({Status:'User saved'});
                 });
             }else{
-                res.json({Status:'User already register'});
+                res.send({Status:'User already register'});
             }
             
         }else{
-            console.log(err);
+            console.send({'err ':err});
         }
     });
 });
